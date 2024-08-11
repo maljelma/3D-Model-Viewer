@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer</title>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #modelViewer {
+            border: 1px solid blue;
+            box-sizing: border-box;
+            width: 100vw;
+            height: calc(100vh - 2rem);
+        }
+
+        #fileInput {
+            box-sizing: border-box;
+            height: 2rem;
+            padding-top: 0.3rem;
+            padding-left: 0.3rem;
+        }
+
+        #scroll-area-icon {
+            position: absolute;
+            right: 0.25rem;
+            top: 0.25rem;
+            width: 1.4rem;
+        }
+
+        #active-ar-button {
+            background-color: white;
+            border-radius: 4px;
+            border: none;
+            position: absolute;
+            top: 16px;
+            right: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <img id="scroll-area-icon" src="./icons/arrows-vertical.svg" alt="">
+
+    <!-- File input to upload the GLB file -->
+    <input title="GLB File" type="file" id="fileInput" accept=".glb">
+
+    <!-- Model Viewer -->
+    <model-viewer id="modelViewer" src="./models/office_chair.glb" poster="" tone-mapping="neutral" shadow-intensity="1"
+        ar camera-controls alt="A 3D model carousel">
+        <button type="button" slot="ar-button" id="active-ar-button">
+            👋 Activate AR
+        </button>
+    </model-viewer>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const modelViewer = document.getElementById('modelViewer');
+
+        fileInput.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                modelViewer.src = url;
+            }
+        });
+    </script>
+
+</body>
+
+</html>
