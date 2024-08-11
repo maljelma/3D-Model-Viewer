@@ -17,18 +17,28 @@
             height: 100vh;
         }
 
-        #active-ar-button{
+        #active-ar-button {
             right: 1rem;
         }
 
-        label[for="fileInput"]{
+        #capturePoster,
+        label[for="fileInput"] {
             left: 1rem;
+        }
+
+        #capturePoster {
+            top: calc(1rem + 2.4rem + 0.1rem);
         }
 
         #active-ar-button,
         label[for="fileInput"] {
-            position: absolute;
             top: 1rem;
+        }
+
+        #active-ar-button,
+        label[for="fileInput"],
+        #capturePoster {
+            position: absolute;
 
             padding: 0.5rem 1.0rem;
 
@@ -45,7 +55,7 @@
             color: #580909bb;
         }
 
-        #fileInput{
+        #fileInput {
             display: none;
         }
     </style>
@@ -60,20 +70,45 @@
 
     <!-- file input to upload the GLB file -->
     <label for="fileInput">Open File</label>
-    <input title="GLB File" type="file" id="fileInput" accept=".glb">
+    <input title="GLB File" type="file" id="fileInput" accept=".glb" multiple>
 
+    <button type="button" id="capturePoster" onclick="capturePoster('png')">Capture</button>
     <!-- file input -->
     <script>
         const fileInput = document.getElementById('fileInput');
         const modelViewer = document.getElementById('modelViewer');
 
-        fileInput.addEventListener('change', function (event) {
+        fileInput.addEventListener('change', async function (event) {
             const file = event.target.files[0];
             if (file) {
                 const url = URL.createObjectURL(file);
                 modelViewer.src = url;
             }
         });
+
+        function download(file) {
+            const link = document.createElement("a");
+            link.download = file.name;
+            link.href = URL.createObjectURL(file);
+            link.click();
+
+            // clean up the URL object
+            URL.revokeObjectURL(link.href);
+        }
+
+        async function exportPoster(fileType = 'webp') {
+            const modelViewer = document.getElementById("modelViewer");
+
+            // use the toBlob method to capture the current model render as a Blob
+            const blob = modelViewer.toBlob({ mimeType: `image/${fileType}`, qualityArgument: 0.92, idealAspect: true });
+
+            return blob;
+        }
+
+        async function capturePoster(fileType) {
+            const blob = await exportPoster(fileType);
+            download(new File([blob], `poster.${fileType}`));
+        }
     </script>
 
 </body>
