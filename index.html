@@ -12,51 +12,57 @@
         }
 
         #modelViewer {
-            border: 1px solid blue;
             box-sizing: border-box;
             width: 100vw;
-            height: calc(100vh - 2rem);
+            height: 100vh;
         }
 
-        #fileInput {
-            box-sizing: border-box;
-            height: 2rem;
-            padding-top: 0.3rem;
-            padding-left: 0.3rem;
+        #active-ar-button{
+            right: 1rem;
         }
 
-        #scroll-area-icon {
+        label[for="fileInput"]{
+            left: 1rem;
+        }
+
+        #active-ar-button,
+        label[for="fileInput"] {
             position: absolute;
-            right: 0.25rem;
-            top: 0.25rem;
-            width: 1.4rem;
+            top: 1rem;
+
+            padding: 0.5rem 1.0rem;
+
+            background-color: #fffa;
+
+            border-color: #f8f2;
+            border-radius: 1.25rem;
+            border-width: 2px;
+            border-style: solid;
+
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #580909bb;
         }
 
-        #active-ar-button {
-            background-color: white;
-            border-radius: 4px;
-            border: none;
-            position: absolute;
-            top: 16px;
-            right: 16px;
+        #fileInput{
+            display: none;
         }
     </style>
 </head>
 
 <body>
-    <img id="scroll-area-icon" src="./icons/arrows-vertical.svg" alt="">
-
-    <!-- File input to upload the GLB file -->
-    <input title="GLB File" type="file" id="fileInput" accept=".glb">
-
-    <!-- Model Viewer -->
+    <!-- model viewer -->
     <model-viewer id="modelViewer" src="./models/office_chair.glb" poster="" tone-mapping="neutral" shadow-intensity="1"
         ar camera-controls alt="A 3D model carousel">
-        <button type="button" slot="ar-button" id="active-ar-button">
-            👋 Activate AR
-        </button>
+        <button type="button" slot="ar-button" id="active-ar-button">Activate AR</button>
     </model-viewer>
 
+    <!-- file input to upload the GLB file -->
+    <label for="fileInput">Open File</label>
+    <input title="GLB File" type="file" id="fileInput" accept=".glb">
+
+    <!-- file input -->
     <script>
         const fileInput = document.getElementById('fileInput');
         const modelViewer = document.getElementById('modelViewer');
