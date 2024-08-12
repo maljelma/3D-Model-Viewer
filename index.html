@@ -124,7 +124,7 @@
         }
 
         .hidden-element {
-            display: none;
+            display: none !important;
         }
     </style>
 </head>
@@ -230,17 +230,21 @@
 
         /* show/hide commands */
         const commandsContainer = document.getElementById("commands-container");
+        const loadedModelsContainer = document.getElementById("loaded-models-container");
         const toggleCommandsVisibility = document.getElementById("toggle-commands-visibility");
         toggleCommandsVisibility.addEventListener("click", () => {
             if (toggleCommandsVisibility.classList.contains('on')) {
                 toggleCommandsVisibility.classList.remove('on');
                 toggleCommandsVisibility.classList.add('off');
                 commandsContainer.classList.add("hidden-element");
+                loadedModelsContainer.classList.add("hidden-element");
+
             }
             else {
                 toggleCommandsVisibility.classList.add('on');
                 toggleCommandsVisibility.classList.remove('off');
                 commandsContainer.classList.remove("hidden-element");
+                loadedModelsContainer.classList.remove("hidden-element");
             }
         });
 
