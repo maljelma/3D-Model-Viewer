@@ -29,7 +29,7 @@
             left: 1rem;
         }
 
-        #commands-menu .image-button {
+        .image-button {
             width: 3rem;
             height: 3rem;
 
@@ -44,11 +44,11 @@
             height: 1.7rem;
         }
 
-        #commands-menu .image-button.on>.off {
+        .image-button.on>.off {
             display: none;
         }
 
-        #commands-menu .image-button.off>.on {
+        .image-button.off>.on {
             display: none;
         }
 
@@ -77,7 +77,7 @@
 
         #loaded-models-container,
         .model-item,
-        #commands-menu .image-button {
+        .image-button {
             border-radius: 7px;
             border-color: #000;
             border-width: 2px;
@@ -127,24 +127,29 @@
         .hidden-element {
             display: none !important;
         }
+
+        #view-ar-button{
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
     </style>
 </head>
 
 <body>
     <!-- model viewer -->
-    <model-viewer id="modelViewer" src="./models/office_chair.glb" poster="" tone-mapping="neutral" shadow-intensity="1"
+    <model-viewer id="modelViewer" src="./models/example.glb" poster="" tone-mapping="neutral" shadow-intensity="1"
         ar camera-controls alt="A 3D model carousel">
         <!-- NOTE: AR-VIEW WILL NOT FUNCTION ON LOCALHOST -->
-        <button id="view-ar-command" type="button" slot="ar-button" class="hidden-element"></button>
+        <button id="view-ar-button" type="button" slot="ar-button" class="image-button">
+            <img src="./icons/ar.svg" alt="icon">
+        </button>
         <div id="commands-menu">
             <button type="button" id="toggle-commands-visibility" class="image-button on">
                 <img src="./icons/shown.svg" alt="state" class="on">
                 <img src="./icons/hidden.svg" alt="state" class="off">
             </button>
             <div id="commands-container" class="">
-                <button type="button" id="view-ar" slot="ar-button" class="image-button">
-                    <img src="./icons/ar.svg" alt="icon">
-                </button>
                 <button type="button" id="print-model" onclick="printModel('png')" class="image-button">
                     <img src="./icons/print.svg" alt="icon">
                 </button>
@@ -218,10 +223,10 @@
         /* ************************** */
 
         /* open ar-view */
-        const viewARCommand = document.getElementById("view-ar-command");
+        /* const viewARCommand = document.getElementById("view-ar-command");
         document.getElementById("view-ar").addEventListener('click', () => {
             viewARCommand.click();
-        });
+        }); */
 
         /* open file(s) picker */
         const openFilesCommand = document.getElementById("open-files-command");
