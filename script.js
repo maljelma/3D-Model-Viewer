@@ -167,13 +167,15 @@ function download(file) {
     URL.revokeObjectURL(link.href);
 }
 
+/* dispatch events for embedded-AR-[on, off](in browser AR) */
 (() => {
-    function onFullScreenChange(event) {
+    function onFullScreenChange() {
         if (document.fullscreenElement) {
-            document.getElementById('toggle-commands-visibility').style.background='#00f';
-          } else {
-            document.getElementById('toggle-commands-visibility').style.background='#f00';
-          }
+            document.dispatchEvent('embedded-ar-on');
+        }
+        else {
+            document.dispatchEvent('embedded-ar-off');
+        }
     }
     // Adding event listeners for different browsers
     document.addEventListener("fullscreenchange", onFullScreenChange);
