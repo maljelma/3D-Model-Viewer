@@ -4,15 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="" />
     <title>3D Model Viewer</title>
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <!-- <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script> -->
+    <script type="module" src="./lib/model-viewer.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <model-viewer id="posterModel" tone-mapping="neutral" shadow-intensity="1" alt="A 3D model carousel"></model-viewer>
     <!-- model viewer -->
-    <model-viewer id="modelViewer" src="./models/example.glb" poster="" tone-mapping="neutral" shadow-intensity="1" ar
+    <model-viewer id="modelViewer" src="" poster="" tone-mapping="neutral" shadow-intensity="1" ar
         camera-controls alt="A 3D model carousel">
+
+        <img id="modelLoadingIndicator" src="./icons/double-spinner.svg" alt="Loading">
         <!-- NOTE: AR-VIEW WILL NOT FUNCTION ON LOCALHOST -->
         <button id="view-ar-button" type="button" slot="ar-button" class="image-button">
             <img src="./icons/ar.svg" alt="icon">
@@ -35,7 +40,7 @@
         </div>
 
         <div id="loaded-models-container"></div>
-        <div class="model-item template">
+        <div class="template model-item hidden-element">
             <img src="./icons/spinner.svg" alt="" class="background loading">
             <div class="remove-command">
                 <img src="./icons/close.svg" alt="icon" class="icon">
@@ -46,6 +51,8 @@
     <!-- file input to upload the GLB file -->
     <input title="GLB File" type="file" id="fileInput" accept=".glb" multiple>
 
+    <!-- scripts -->
+    <script src="./lib/EventQueue.js"></script>
     <script src="./script.js"></script>
 </body>
 

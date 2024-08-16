@@ -14,15 +14,6 @@ fileInput.addEventListener('change', async function (event) {
     });
 });
 
-function download(file) {
-    const link = document.createElement("a");
-    link.download = file.name;
-    link.href = URL.createObjectURL(file);
-    link.click();
-
-    // clean up the URL object
-    URL.revokeObjectURL(link.href);
-}
 
 /* create a blob poster(e.i. image) of the 3d model in the given image-file-type(png, webp) */
 async function exportPoster(fileType = 'webp') {
@@ -70,23 +61,6 @@ toggleCommandsVisibility.addEventListener("click", () => {
     }
 });
 
-
-/* show default poster */
-/* window.addEventListener("DOMContentLoaded", () => {
-    const modelViewer = document.getElementById("modelViewer");
-    modelViewer.onload = async () => {
-        // update poster
-        const poster = await exportPoster();
-        const url = URL.createObjectURL(poster);
-        const defaultModelBackground = document.querySelector(".model-item.template").querySelector(".background");
-        defaultModelBackground.src = url;
-
-        // clear on-load event callback
-        modelViewer.onload = undefined;
-    }
-
-}); */
-
 function createModelCard(file) {
     const loadedModelsContainer = document.getElementById("loaded-models-container");
     const modelCard = document.querySelector(".model-item.template").cloneNode(true);
@@ -122,4 +96,97 @@ function createModelCard(file) {
             }
         }
     }
+}
+
+/* sample model */
+async function loadSampleModel() {
+    const modelViewer = document.getElementById("modelViewer");
+    const loadedModelsContainer = document.getElementById("loaded-models-container");
+    try {
+        /* load sample-model to model-viewer */
+        const sampleModel = await fetch('./models/sample.glb');
+        const blob = await sampleModel.blob();
+        const url = URL.createObjectURL(blob);
+
+        modelViewer.dispatchEvent(new Event("load-started"));
+        modelViewer.src = url;
+
+        /* create a model-poster card */
+        const card = createNewCardElement();
+        card.classList.add("sample");
+        loadedModelsContainer.appendChild(card);
+
+        /* when model loaded/drawn capture poster image */
+        modelViewer.onload = async () => {
+            const posterBlob = await modelViewer.toBlob({ mimeType: `image/webp`, qualityArgument: 0.92, idealAspect: true });
+            const posterUrl = URL.createObjectURL(posterBlob);
+            card.querySelector('.background').src = posterUrl;
+            modelViewer.onload = undefined;
+        }
+    }
+    catch (e) {
+        console.log(`${e}`);
+    }
+}
+window.addEventListener("DOMContentLoaded", () => {
+    loadSampleModel();
+});
+
+/* show/hide loading on view-model loading */
+(() => {
+    const modelViewer = document.getElementById("modelViewer");
+    const modelLoadingIndicator = document.getElementById('modelLoadingIndicator');
+    modelViewer.addEventListener('load', () => {
+        modelLoadingIndicator.classList.add('hidden-element');
+    });
+    modelViewer.addEventListener('load-started', () => {
+        modelLoadingIndicator.classList.remove('hidden-element');
+    });
+})();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function createNewCardElement() {
+    const card = document.querySelector(".template.model-item").cloneNode(true);
+    card.classList.remove("template");
+    card.classList.remove("hidden-element");
+    return card;
+}
+
+function download(file) {
+    const link = document.createElement("a");
+    link.download = file.name;
+    link.href = URL.createObjectURL(file);
+    link.click();
+
+    // clean up the URL object
+    URL.revokeObjectURL(link.href);
 }

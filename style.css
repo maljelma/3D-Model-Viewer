@@ -82,11 +82,10 @@ body {
 }
 
 .model-item {
-    display: contents;
+    display: block;
     position: relative;
     width: calc(160px - (1rem + 1rem) - (.5rem + .5rem));
     height: 100%;
-    display: block;
     float: left;
     box-sizing: border-box;
     overflow: hidden;
@@ -157,4 +156,24 @@ body {
 
 .model-item.template {
     height: 160px;
+}
+
+#posterModel{
+    background-color: #000;
+    border: 2px solid yellow;
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+
+    opacity: 0.0;
+}
+
+#modelLoadingIndicator{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    object-position: center;
 }
