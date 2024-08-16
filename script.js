@@ -168,14 +168,13 @@ function download(file) {
 }
 
 (() => {
-    const modelViewer = document.getElementById("modelViewer");
     function onFullScreenChange(event) {
-        if (modelViewer.fullscreenElement) {
-            alert('Entered full-screen mode');
+        if (document.fullscreenElement) {
+            document.getElementById('toggle-commands-visibility').style.background='#00f';
           } else {
-            alert('Exited full-screen mode');
+            document.getElementById('toggle-commands-visibility').style.background='#f00';
           }
     }
     // Adding event listeners for different browsers
-    modelViewer.addEventListener("fullscreenchange", onFullScreenChange);
+    document.addEventListener("fullscreenchange", onFullScreenChange);
 })();
