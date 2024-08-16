@@ -167,10 +167,15 @@ function download(file) {
     URL.revokeObjectURL(link.href);
 }
 
-document.addEventListener('fullscreenchange', ()=>{
-    if (document.fullscreenElement) {
-        alert('f');
-    } else {
-        alert('c');
+(() => {
+    const modelViewer = document.getElementById("modelViewer");
+    function onFullScreenChange(event) {
+        if (modelViewer.fullscreenElement) {
+            alert('Entered full-screen mode');
+          } else {
+            alert('Exited full-screen mode');
+          }
     }
-});
+    // Adding event listeners for different browsers
+    modelViewer.addEventListener("fullscreenchange", onFullScreenChange);
+})();
