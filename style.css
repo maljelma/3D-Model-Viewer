@@ -158,7 +158,7 @@ body {
     height: 160px;
 }
 
-#posterModel{
+#posterModel {
     background-color: #000;
     border: 2px solid yellow;
     box-sizing: border-box;
@@ -170,10 +170,28 @@ body {
     opacity: 0.0;
 }
 
-#modelLoadingIndicator{
+#modelLoadingIndicator {
     position: absolute;
     width: 100vw;
     height: 100vh;
     object-fit: contain;
     object-position: center;
+}
+
+#modelEmptyIndicator {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    font-size: 2rem;
+    color: #00000091;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
+    background-color: #fff;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+#modelViewer.no-model #modelEmptyIndicator {
+    display: flex;
 }

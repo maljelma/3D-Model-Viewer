@@ -18,6 +18,7 @@
         camera-controls alt="A 3D model carousel">
 
         <img id="modelLoadingIndicator" src="./icons/double-spinner.svg" alt="Loading">
+        <div id="modelEmptyIndicator"><span>no model</span></div>
         <!-- NOTE: AR-VIEW WILL NOT FUNCTION ON LOCALHOST -->
         <button id="view-ar-button" type="button" slot="ar-button" class="image-button">
             <img src="./icons/ar.svg" alt="icon">
@@ -28,7 +29,7 @@
                 <img src="./icons/hidden.svg" alt="state" class="off">
             </button>
             <div id="commands-container" class="">
-                <button type="button" id="print-model" onclick="printModel('png')" class="image-button">
+                <button type="button" id="print-model" class="image-button">
                     <img src="./icons/print.svg" alt="icon">
                 </button>
                 <label for="fileInput" id="open-files-command">

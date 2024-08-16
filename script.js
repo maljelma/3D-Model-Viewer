@@ -1,20 +1,107 @@
-const fileInput = document.getElementById('fileInput');
-const modelViewer = document.getElementById('modelViewer');
+/* load model(s) */
+(() => {
+    const fileInput = document.getElementById('fileInput');
+    const modelViewer = document.getElementById('modelViewer');
+    const modelPrinter = document.getElementById('posterModel');
+    const modelsCardsContainer = document.getElementById("loaded-models-container");
 
-fileInput.addEventListener('change', async function (event) {
-    document.getElementById("loaded-models-container").innerHTML = "";
-    const file = event.target.files[0];
-    if (file) {
-        const url = URL.createObjectURL(file);
-        modelViewer.src = url;
+    modelsCardsContainer.EventQueue = new EventQueue(modelsCardsContainer, 'card-created', async (e) => {
+        const { card, modelURL } = e.detail;
+        const poster = await printModel(modelURL);
+        card.querySelector('.background').src = poster;
+    });
+
+    fileInput.addEventListener('change', async function (event) {
+        Array.from(event.target.files).forEach(f => {
+            const card = createNewCardElement();
+            const modelURL = URL.createObjectURL(f);
+            createCard(card, modelURL);
+        });
+        fileInput.value = '';
+    });
+    function createCard(card, modelURL) {
+        /* set event handlers */
+        card.querySelector('.background').onclick = () => showModel(card, modelURL);
+        card.querySelector('.remove-command').onclick = () => deleteModel(card, modelURL);
+        /* add card container */
+        modelsCardsContainer.appendChild(card);
+        /* dispatch a 'card-created' event to add card to queue to create a poster for it */
+        modelsCardsContainer.dispatchEvent(new CustomEvent('card-created', { detail: { card, modelURL } }));
+    }
+    function showModel(modelCard, modelURL) {
+        const selected = modelsCardsContainer.querySelector('.selected');
+        if (selected != modelCard) {
+            if (selected) { selected.classList.remove('selected'); }
+            modelViewer.dispatchEvent(new Event("load-started"));
+            modelViewer.src = modelURL;
+            modelCard.classList.add('selected');
+        }
+        if (modelViewer.classList.contains('no-model')) {
+            modelViewer.classList.remove('no-model');
+        }
+    }
+    function deleteModel(modelCard, modelURL) {
+        const selected = modelsCardsContainer.querySelector('.selected');
+        URL.revokeObjectURL(modelURL);
+        modelCard.remove();
+        if (selected == modelCard) {
+            const firstCard = modelsCardsContainer.children[0];
+            if (firstCard) {
+                firstCard.querySelector('.background').click();
+            }
+            else {
+                modelViewer.classList.add('no-model');
+            }
+        }
+    }
+    async function printModel(modelURL) {
+        modelPrinter.src = modelURL;
+        return new Promise((resolve, reject) => {
+            modelPrinter.onload = async () => {
+                const posterBlob = await modelPrinter.toBlob({ mimeType: `image/webp`, qualityArgument: 0.92, idealAspect: true });
+                const posterUrl = URL.createObjectURL(posterBlob);
+                modelViewer.onload = undefined;
+                resolve(posterUrl);
+            }
+        });
     }
 
-    Array.from(event.target.files).forEach(f => {
-        createModelCard(f);
+    function createNewCardElement() {
+        const card = document.querySelector(".template.model-item").cloneNode(true);
+        card.classList.remove("template");
+        card.classList.remove("hidden-element");
+        return card;
+    }
+
+    /* create sample model */
+    window.addEventListener("DOMContentLoaded", async () => {
+        const modelViewer = document.getElementById("modelViewer");
+        try {
+            /* load sample-model to model-viewer */
+            const sampleModel = await fetch('./models/sample.glb');
+            const blob = await sampleModel.blob();
+            const url = URL.createObjectURL(blob);
+
+            modelViewer.dispatchEvent(new Event("load-started"));
+            modelViewer.src = url;
+
+            /* create a model-poster card */
+            const card = createNewCardElement();
+            card.classList.add("sample");
+            card.classList.add("selected");
+
+            /* create model-card */
+            createCard(card, url);
+        }
+        catch (e) {
+            console.log(`${e}`);
+        }
     });
-});
+})();
 
-
+/* ************************** */
+/* ** commands ************** */
+/* ************************** */
 /* create a blob poster(e.i. image) of the 3d model in the given image-file-type(png, webp) */
 async function exportPoster(fileType = 'webp') {
     const modelViewer = document.getElementById("modelViewer");
@@ -24,16 +111,6 @@ async function exportPoster(fileType = 'webp') {
 
     return blob;
 }
-
-/* captures and downloads a blob poster(e.i. image) of the 3d model in the given image-file-type(png, webp) */
-async function printModel(fileType) {
-    const blob = await exportPoster(fileType);
-    download(new File([blob], `poster.${fileType}`));
-}
-
-/* ************************** */
-/* ** commands ************** */
-/* ************************** */
 
 /* open file(s) picker */
 const openFilesCommand = document.getElementById("open-files-command");
@@ -61,76 +138,12 @@ toggleCommandsVisibility.addEventListener("click", () => {
     }
 });
 
-function createModelCard(file) {
-    const loadedModelsContainer = document.getElementById("loaded-models-container");
-    const modelCard = document.querySelector(".model-item.template").cloneNode(true);
-    modelCard.classList.remove("selected");
-    modelCard.classList.remove("default");
-    modelCard.classList.remove("hidden-element");
-    const modelCardBackground = modelCard.querySelector(".background");
-    modelCardBackground.src = "";
-    loadedModelsContainer.appendChild(modelCard);
-
-    modelCardBackground.onclick = async (e) => {
-        const modelViewer = document.getElementById("modelViewer");
-        const url = URL.createObjectURL(file);
-        modelViewer.src = url;
-
-        const selectedCard = document.querySelector(".model-item.selected");
-        if (selectedCard) {
-            selectedCard.classList.remove('selected');
-        }
-
-        modelCard.classList.add("selected");
-
-        if (!modelCardBackground.classList.contains("ready") || true) {
-            modelViewer.onload = async () => {
-                /* update poster */
-                const poster = await exportPoster();
-                const bUrl = URL.createObjectURL(poster);
-                modelCardBackground.src = bUrl;
-                modelCardBackground.classList.add("ready")
-
-                /* clear on-load event callback */
-                modelViewer.onload = undefined;
-            }
-        }
-    }
+/* captures and downloads a blob poster(e.i. image) of the 3d model in the given image-file-type(png, webp) */
+async function printViewModel(fileType) {
+    const blob = await exportPoster(fileType);
+    download(new File([blob], `poster.${fileType}`));
 }
-
-/* sample model */
-async function loadSampleModel() {
-    const modelViewer = document.getElementById("modelViewer");
-    const loadedModelsContainer = document.getElementById("loaded-models-container");
-    try {
-        /* load sample-model to model-viewer */
-        const sampleModel = await fetch('./models/sample.glb');
-        const blob = await sampleModel.blob();
-        const url = URL.createObjectURL(blob);
-
-        modelViewer.dispatchEvent(new Event("load-started"));
-        modelViewer.src = url;
-
-        /* create a model-poster card */
-        const card = createNewCardElement();
-        card.classList.add("sample");
-        loadedModelsContainer.appendChild(card);
-
-        /* when model loaded/drawn capture poster image */
-        modelViewer.onload = async () => {
-            const posterBlob = await modelViewer.toBlob({ mimeType: `image/webp`, qualityArgument: 0.92, idealAspect: true });
-            const posterUrl = URL.createObjectURL(posterBlob);
-            card.querySelector('.background').src = posterUrl;
-            modelViewer.onload = undefined;
-        }
-    }
-    catch (e) {
-        console.log(`${e}`);
-    }
-}
-window.addEventListener("DOMContentLoaded", () => {
-    loadSampleModel();
-});
+document.getElementById('print-model').onclick = () => printViewModel('png');
 
 /* show/hide loading on view-model loading */
 (() => {
@@ -143,43 +156,6 @@ window.addEventListener("DOMContentLoaded", () => {
         modelLoadingIndicator.classList.remove('hidden-element');
     });
 })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function createNewCardElement() {
-    const card = document.querySelector(".template.model-item").cloneNode(true);
-    card.classList.remove("template");
-    card.classList.remove("hidden-element");
-    return card;
-}
 
 function download(file) {
     const link = document.createElement("a");
