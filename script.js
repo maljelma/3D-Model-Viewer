@@ -166,3 +166,11 @@ function download(file) {
     // clean up the URL object
     URL.revokeObjectURL(link.href);
 }
+
+document.addEventListener('fullscreenchange', ()=>{
+    if (document.fullscreenElement) {
+        alert('f');
+    } else {
+        alert('c');
+    }
+});
