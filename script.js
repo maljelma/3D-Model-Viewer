@@ -171,10 +171,10 @@ function download(file) {
 (() => {
     function onFullScreenChange() {
         if (document.fullscreenElement) {
-            document.dispatchEvent('embedded-ar-on');
+            document.dispatchEvent(new Event('embedded-ar-on'));
         }
         else {
-            document.dispatchEvent('embedded-ar-off');
+            document.dispatchEvent(new Event('embedded-ar-off'));
         }
     }
     // Adding event listeners for different browsers
