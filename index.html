@@ -20,10 +20,10 @@
         <img id="modelLoadingIndicator" src="./icons/double-spinner.svg" alt="Loading">
         <div id="modelEmptyIndicator"><span>no model</span></div>
         <!-- NOTE: AR-VIEW WILL NOT FUNCTION IN LOCALHOST -->
-        <button id="view-ar-button" type="button" slot="ar-button" class="image-button">
+        <button id="view-ar-button" type="button" slot="ar-button" class="image-button hidable-element">
             <img src="./icons/ar.svg" alt="icon">
         </button>
-        <button id="info-button" type="button" class="image-button">
+        <button id="info-button" type="button" class="image-button hidable-element hide-on-ar-mode">
             <img src="./icons/info.svg" alt="icon">
         </button>
         <div id="commands-menu">
@@ -31,7 +31,7 @@
                 <img src="./icons/shown.svg" alt="state" class="on">
                 <img src="./icons/hidden.svg" alt="state" class="off">
             </button>
-            <div id="commands-container" class="">
+            <div id="commands-container" class="hidable-element hide-on-ar-mode">
                 <button type="button" id="print-model" class="image-button">
                     <img src="./icons/print.svg" alt="icon">
                 </button>
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <div id="loaded-models-container"></div>
+        <div id="loaded-models-container" class="hidable-element"></div>
         <div class="template model-item hidden-element">
             <img src="./icons/spinner.svg" alt="" class="background loading">
             <div class="remove-command">
