@@ -19,9 +19,12 @@
 
         <img id="modelLoadingIndicator" src="./icons/double-spinner.svg" alt="Loading">
         <div id="modelEmptyIndicator"><span>no model</span></div>
-        <!-- NOTE: AR-VIEW WILL NOT FUNCTION ON LOCALHOST -->
+        <!-- NOTE: AR-VIEW WILL NOT FUNCTION IN LOCALHOST -->
         <button id="view-ar-button" type="button" slot="ar-button" class="image-button">
             <img src="./icons/ar.svg" alt="icon">
+        </button>
+        <button id="info-button" type="button" class="image-button">
+            <img src="./icons/info.svg" alt="icon">
         </button>
         <div id="commands-menu">
             <button type="button" id="toggle-commands-visibility" class="image-button on">
@@ -34,7 +37,7 @@
                 </button>
                 <label for="fileInput" id="open-files-command">
                     <button type="button" id="open-files" slot="ar-button" class="image-button">
-                        <img src="./icons/open-file(s).svg" alt="icon">
+                        <img src="./icons/add.svg" alt="icon">
                     </button>
                 </label>
             </div>
@@ -52,6 +55,18 @@
     <!-- file input to upload the GLB file -->
     <input title="GLB File" type="file" id="fileInput" accept=".glb" multiple>
 
+    <div id="info">
+        <div class="header">
+            <h2>3D Model Viewer</h2>
+            <div class="close-button image-button">
+                <img src="./icons/close.svg" alt="icon" class="icon">
+            </div>
+        </div>
+        
+        <p>
+            supports .glb and .glTF model file formats.
+        </p>
+    </div>
     <!-- scripts -->
     <script src="./lib/EventQueue.js"></script>
     <script src="./script.js"></script>

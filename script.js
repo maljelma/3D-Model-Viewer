@@ -180,3 +180,16 @@ function download(file) {
     // Adding event listeners for different browsers
     document.addEventListener("fullscreenchange", onFullScreenChange);
 })();
+
+/* info window */
+(()=>{
+    const infoButton = document.getElementById('info-button');
+    const infoWindow = document.getElementById('info');
+    const infoWindowCloseButton = infoWindow.querySelector('.close-button');
+    infoButton.onclick = () =>{
+        infoWindow.classList.add('opened');
+    }
+    infoWindowCloseButton.onclick = () =>{
+        infoWindow.classList.remove('opened');
+    }
+})();
