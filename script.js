@@ -193,3 +193,17 @@ function download(file) {
         infoWindow.classList.remove('opened');
     }
 })();
+
+/* setup ar window layouts */
+(()=>{
+    const infoButton = document.getElementById('info-button');
+    const commandsContainer = document.getElementById("commands-container");
+    document.addEventListener('embedded-ar-on',()=>{
+        infoButton.classList.add("ar-mode-hidden-element");
+        commandsContainer.classList.add("ar-mode-hidden-element");
+    });
+    document.addEventListener('embedded-ar-off',()=>{
+        infoButton.classList.remove("ar-mode-hidden-element");
+        commandsContainer.classList.remove("ar-mode-hidden-element");
+    });
+})();

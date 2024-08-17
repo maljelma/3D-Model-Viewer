@@ -137,7 +137,8 @@ body {
     border-color: blue;
 }
 
-.hidden-element {
+.hidden-element,
+.ar-mode-hidden-element {
     display: none !important;
 }
 
