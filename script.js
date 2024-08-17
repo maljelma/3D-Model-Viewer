@@ -119,6 +119,8 @@ document.getElementById("open-files").addEventListener('click', () => {
 });
 
 /* show/hide commands */
+const viewArButton = document.getElementById('view-ar-button');
+const infoButton = document.getElementById('info-button');
 const commandsContainer = document.getElementById("commands-container");
 const loadedModelsContainer = document.getElementById("loaded-models-container");
 const toggleCommandsVisibility = document.getElementById("toggle-commands-visibility");
@@ -126,15 +128,20 @@ toggleCommandsVisibility.addEventListener("click", () => {
     if (toggleCommandsVisibility.classList.contains('on')) {
         toggleCommandsVisibility.classList.remove('on');
         toggleCommandsVisibility.classList.add('off');
+        viewArButton.classList.add("hidden-element");
+        infoButton.classList.add("hidden-element");
         commandsContainer.classList.add("hidden-element");
         loadedModelsContainer.classList.add("hidden-element");
-
+        viewArButton.setAttribute('slot','');
     }
     else {
         toggleCommandsVisibility.classList.add('on');
         toggleCommandsVisibility.classList.remove('off');
+        viewArButton.classList.remove("hidden-element");
+        infoButton.classList.remove("hidden-element");
         commandsContainer.classList.remove("hidden-element");
         loadedModelsContainer.classList.remove("hidden-element");
+        viewArButton.setAttribute('slot','ar-button');
     }
 });
 
