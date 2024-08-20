@@ -19,9 +19,7 @@
 </head>
 
 <body>
-    <model-viewer id="model-viewer" src="" ar="" ar-modes="scene-viewer quick-look" camera-controls=""
-        touch-action="pan-y" alt="A 3D model viewer" shadow-intensity="2" auto-rotate="" disable-pan=""
-        ar-status="not-presenting">
+    <model-viewer id="model-viewer" ar ar-modes="webxr scene-viewer" mode="ar_preferred">
         <button id="view-ar-button" type="button" slot="ar-button" class="image-button hidable-element">
             <img src="./icons/ar.svg" alt="icon">
         </button>
@@ -30,12 +28,12 @@
     <script>
         async function setSrc(url) {
             const blob = await fetch(url).then(res => res.blob());
-            const reader = new FileReader();
+            /* const reader = new FileReader();
             reader.onload = function (event) {
                 modelViewer.src = event.target.result; // The result is a data URI
             };
-            reader.readAsDataURL(blob);
-            //modelViewer.src = blob.stream();
+            reader.readAsDataURL(blob); */
+            modelViewer.src = URL.createObjectURL(blob);
         }
         const modelViewer = document.getElementById("model-viewer");
         //modelViewer.src = "./models/sample.glb";
