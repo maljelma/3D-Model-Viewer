@@ -11,13 +11,18 @@
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="./app/manifest.json">
     <script src="./app/app.js"></script>
+    <!-- iOS -->
+    <link rel="apple-touch-icon" href="./app/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="./app/icons/icon-512x512.png">
+    <meta name="apple-mobile-web-app-status-bar" content="#fff">
 </head>
 
 <body>
     <model-viewer id="posterModel" tone-mapping="neutral" shadow-intensity="1" alt="A 3D model carousel"></model-viewer>
     <!-- model viewer -->
-    <model-viewer id="modelViewer" src="" poster="" tone-mapping="neutral" shadow-intensity="1" ar
-        camera-controls alt="A 3D model carousel">
+    <!-- ar-modes is the used AR application/mode as starting from SceneViewer on Android or QuickLook on iOS -->
+    <model-viewer id="modelViewer" src="" poster="" tone-mapping="neutral" shadow-intensity="1" camera-controls
+        alt="A 3D model carousel" ar ar-modes="scene-viewer quick-look">
 
         <img id="modelLoadingIndicator" src="./icons/double-spinner.svg" alt="Loading">
         <div id="modelEmptyIndicator"><span>no model</span></div>
@@ -64,7 +69,7 @@
                 <img src="./icons/close.svg" alt="icon" class="icon">
             </div>
         </div>
-        
+
         <p>
             supports .glb and .glTF model file formats.
         </p>
