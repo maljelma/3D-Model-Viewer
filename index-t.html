@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer</title>
+    <script type="module" src="./lib/model-viewer.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #model-viewer {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <model-viewer id="model-viewer" src="" ar="" ar-modes="scene-viewer quick-look" camera-controls=""
+        touch-action="pan-y" alt="A 3D model viewer" shadow-intensity="2" auto-rotate="" disable-pan=""
+        ar-status="not-presenting">
+        <button id="view-ar-button" type="button" slot="ar-button" class="image-button hidable-element">
+            <img src="./icons/ar.svg" alt="icon">
+        </button>
+    </model-viewer>
+
+    <script>
+        async function setSrc(url) {
+            const blob = await fetch(url).then(res => res.blob());
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                modelViewer.src = event.target.result; // The result is a data URI
+            };
+            reader.readAsDataURL(blob);
+            //modelViewer.src = blob.stream();
+        }
+        const modelViewer = document.getElementById("model-viewer");
+        //modelViewer.src = "./models/sample.glb";
+        setSrc("./models/sample.glb")
+    </script>
+</body>
+
+</html>
